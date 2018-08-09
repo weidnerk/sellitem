@@ -21,6 +21,7 @@ namespace sellitem
             }
             else
             {
+                Console.WriteLine(CreateSQL(args[0]));
                 Process.Start("chrome.exe", "https://www.ebay.com/sh/ord/?filter=status:AWAITING_SHIPMENT");
                 Process.Start("chrome.exe", "https://www.samsclub.com/sams/account/addressbook/addressBook.jsp?&locale=en_US&DPSLogout=true&_requestid=344908");
                 Task.Run(async () =>
@@ -30,6 +31,12 @@ namespace sellitem
                     Process.Start("chrome.exe", listing.SourceUrl);
                 }).Wait();
             }
+        }
+
+        static string CreateSQL(string listingId)
+        {
+            string sql = string.Format("exec sp_SoldUpdate '{0}', '{1}', @i_paid", listingId, DateTime.Today.ToShortDateString());
+            return sql;
         }
 
         static async Task<PostedListing> getListing(string listingItemId)
