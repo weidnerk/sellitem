@@ -35,13 +35,14 @@ namespace sellitem
 
         static string CreateSQL(string listingId)
         {
-            string sql = string.Format("exec sp_SoldUpdate '{0}', '{1}', @i_paid", listingId, DateTime.Today.ToShortDateString());
+            //string sql = string.Format("exec sp_SoldUpdate '{0}', '{1}', @i_paid", listingId, DateTime.Today.ToShortDateString());
+            string sql = string.Format("exec sp_SoldUpdate '{0}', '{1}', @i_paid, '@order_num'", listingId, DateTime.Now.ToString());
             return sql;
         }
 
         static async Task<PostedListing> getListing(string listingItemId)
         {
-            var postedListing = await db.GetPostedListing(listingItemId);
+            var postedListing = await db.GetPostedListingFromListId(listingItemId);
             return postedListing;
         }
     }
